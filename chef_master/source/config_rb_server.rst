@@ -47,7 +47,7 @@ The following settings are typically added to the server configuration file (no 
 
 .. end_tag
 
-SSL Protocols
+NGINX SSL Protocols
 -----------------------------------------------------
 .. tag server_tuning_nginx
 
@@ -260,7 +260,7 @@ postgresql
 -----------------------------------------------------
 .. tag server_tuning_postgresql
 
-The following setting is often modified from the default as part of the tuning effort for the **postgresql** service:
+The following settings are often modified from the default as part of the tuning effort for the **postgresql** service:
 
 ``postgresql['max_connections']``
    The maximum number of allowed concurrent connections. This value should only be tuned when the ``opscode_erchef['db_pool_size']`` value used by the **opscode-erchef** service is modified. Default value: ``350``.
@@ -286,5 +286,8 @@ The following setting is often modified from the default as part of the tuning e
    .. code-block:: ruby
 
       550 = 350 + [(4 - 2) * (25 * 4)]
+
+``postgresql['sslmode']``
+	SSL encryption mode between Chef Server and PostgreSQL.  Valid settings are ``'disable'`` (off) and ``'require'`` (on).  Default value: ``'disable'``.  
 
 .. end_tag
