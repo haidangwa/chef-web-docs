@@ -278,9 +278,9 @@ The following table describes the components in an external PostgreSQL configura
 
 .. DO NOT CHANGE THE FOLLOWING TITLE BECAUSE IT IS LINKED FROM THE ERROR MESSAGES IN THE CODE FOR THESE SETTINGS.
 
-PostgreSQL Settings
+External PostgreSQL Settings
 ----------------------------------------------------
-Use the following configuration settings in the chef-server.rb file to configure PostgreSQL for use with the Chef Infra Server:
+Use the following configuration settings in the chef-server.rb file to configure External PostgreSQL for use with the Chef Infra Server:
 
 .. list-table::
    :widths: 200 300
@@ -291,7 +291,7 @@ Use the following configuration settings in the chef-server.rb file to configure
    * - ``postgresql['db_superuser']``
      - Required when ``postgresql['external']`` is set to ``true``. The PostgreSQL user name. This user must be granted either the ``CREATE ROLE`` and ``CREATE DATABASE`` permissions in PostgreSQL or be granted ``SUPERUSER`` permission. This user must also have an entry in the host-based authentication configuration file used by PostgreSQL (traditionally named ``pg_hba.conf``). Default value: ``'superuser_userid'``.
    * - ``postgresql['db_superuser_password']``
-     - The password for the user specified by ``postgresql['db_superuser']``.  Required when ``postgresql['external']`` is set to ``true``.
+     - The password for the user specified by ``postgresql['db_superuser']``. Required when ``postgresql['external']`` is set to ``true``.
 
        The db_superuser_password can also be set using ``chef-server-ctl set-db-superuser-password`` from the `Secrets Management </ctl_chef_server.html#ctl-chef-server-secrets-management>`__ commands.
    * - ``postgresql['external']``
@@ -301,7 +301,42 @@ Use the following configuration settings in the chef-server.rb file to configure
    * - ``postgresql['vip']``
      - Required when ``postgresql['external']`` is set to ``true``. The virtual IP address. The host for this IP address must be online and reachable from the Chef Infra Server via the port specified by ``postgresql['port']``. Set this value to the IP address or hostname for the machine on which external PostgreSQL is located when ``postgresql['external']`` is set to ``true``.
 
+Optional Settings
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+The following optional settings are required when configuring External PostgreSQL on Microsoft Azure:
 
+.. list-table::
+   :widths: 200 300
+   :header-rows: 1
+
+   * - Setting
+     - Description
+   * - ``bookshelf['sql_connection_user']``
+     - The PostgreSQL user name in ``'<username@hostname>'`` format (e.g. ``'bookshelf@my_postgresql.postgres.database.azure.com'``) used for making PostgreSQL queries, where ``username`` would normally equal the value of ``bookshelf['sql_user']`` (default ``'bookshelf'``). Default value: ``nil``.
+   * - ``oc_bifrost['sql_connection_user']``
+     - The PostgreSQL user name in ``'<username@hostname>'`` format (e.g. ``'bifrost@my_postgresql.postgres.database.azure.com'``) used for making PostgreSQL queries, where ``username`` would normally equal the value of ``oc_bifrost['sql_user']`` (default ``'bifrost'``). Default value: ``nil``.
+   * - ``oc_id['sql_connection_user']``
+     - The PostgreSQL user name in ``'<username@hostname>'`` format (e.g. ``'oc_id@my_postgresql.postgres.database.azure.com'``) used for making PostgreSQL queries, where ``username`` would normally equal the value of ``oc_id['sql_user']`` (default ``'oc_id'``). Default value: ``nil``.
+   * - ``opscode_erchef['sql_connection_user']``
+     - The PostgreSQL user name in ``'<username@hostname>'`` format (e.g. ``'opscode_chef@my_postgresql.postgres.database.azure.com'``) used for making PostgreSQL queries, where ``username`` would normally equal the value of ``opscode-erchef['sql_user']`` (default ``'opscode_chef'``). Default value: ``nil``.
+   * - ``postgresql['db_connection_superuser']``
+     - The PostgreSQL superuser name in ``'<username@hostname>'`` format (e.g. ``'opscode_pgsql@my_postgresql.postgres.database.azure.com'``) used for creating PostgreSQL connections, where ``username`` would normally equal the value specified in ``postgresql['db_superuser']``. Default value: ``nil``.
+
+An example ``chef-server.rb`` configuration for External PostgreSQL on Microsoft Azure:
+
+.. code-block:: ruby
+
+     topology 'standalone'
+     postgresql['external']=true
+     postgresql['vip']='my_postgresql.postgres.database.azure.com'
+     postgresql['db_superuser']='opscode_pgsql'
+     postgresql['db_superuser_password']='My_postgres_password1!'
+     postgresql['db_connection_superuser']='opscode_pgsql@my_postgresql.postgres.database.azure.com'
+     # postgresql['sslmode']='require' # required if 'Enforce SSL connection' is enabled on Azure PostgreSQL
+     bookshelf['sql_connection_user']='bookshelf@my_postgresql.postgres.database.azure.com'
+     oc_bifrost['sql_connection_user']='bifrost@my_postgresql.postgres.database.azure.com'
+     oc_id['sql_connection_user']='oc_id@my_postgresql.postgres.database.azure.com'
+     opscode_erchef['sql_connection_user']='opscode_chef@my_postgresql.postgres.database.azure.com'
 
 .. note:: See the list of `error messages that may be present </errors.html#external-postgresql>`_ when configuring the Chef Infra Server to use a remote PostgreSQL server.
 
