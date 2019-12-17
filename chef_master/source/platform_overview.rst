@@ -85,21 +85,6 @@ Chef Automate provides a full suite of enterprise capabilities for workflow, nod
 
 Chef Automate gives you a full-stack continuous deployment pipeline, automated testing for compliance and security, as well as visibility into everything that's happening as you move your applications and infrastructure through the pipeline and then when they're in production.
 
-Workflow
------------------------------------------------------
-
-Chef Automate includes a pipeline for continuous delivery of infrastructure and applications. This full-stack approach, where infrastructure changes are delivered in tandem with any application changes, allows for safe deployment at high velocity. Here is the Chef Automate workflow.
-
-.. image:: ../../images/delivery_full_workflow.svg
-   :width: 600px
-   :align: center
-
-The Chef Automate pipeline has automated quality gates that move a change from a developer’s workstation all the way to production. Your team approves a proposed change, and, after acceptance tests, releases the corresponding artifact for delivery into production. After the Acceptance stage, the artifact moves on to the Union, Rehearsal and Delivered stages of the pipeline.
-
-The Union phase enables cross-team collaboration—it contains quality gates that ensure that changes made by one team or organization work consistently with changes made in parallel by other teams.
-
-Chef Automate includes a graphical user interface that shows you the entire process. For example, you can tell at a glance which organizations include which projects. Dashboards let you track each change and see its status as it moves through the pipeline.
-
 Nodes
 -----------------------------------------------------
 
